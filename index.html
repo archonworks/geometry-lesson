@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Начальные геометрические сведения — подготовка к контрольной</title>
+<style>
+  :root{
+    --bg:#f5f3ec; --card:#ffffff; --ink:#1e2330; --muted:#636b7c; --line:#dedacd; --soft:#f0ede3;
+    --c1:#2563eb; --c2:#e2570c; --c3:#198754; --c4:#b93a93;
+    --ok:#198754; --ok-bg:#e6f4ec; --no:#c93030; --no-bg:#fbe9e9;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#14171e; --card:#1d212b; --ink:#e9ecf3; --muted:#9aa3b5; --line:#333a49; --soft:#252a36;
+      --c1:#6ea0ff; --c2:#ff9255; --c3:#4fc98d; --c4:#e57fc6;
+      --ok:#4fc98d; --ok-bg:#1b3229; --no:#ff7b7b; --no-bg:#3a2024;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.55 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px 80px}
+
+  header.hero{padding:48px 0 20px}
+  .kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--c1);font-weight:700}
+  h1{font-size:clamp(28px,5vw,42px);line-height:1.12;margin:8px 0 12px;letter-spacing:-.02em}
+  .lead{color:var(--muted);max-width:660px;margin:0}
+
+  nav.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+    margin:0 -20px 28px;padding:10px 20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  nav.top a{color:var(--ink);text-decoration:none;font-weight:600;font-size:14px;
+    padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+  nav.top a:hover{border-color:var(--c1);color:var(--c1)}
+  nav.top .sp{flex:1}
+  button.mode{font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:#fff;background:var(--c1);
+    border:0;border-radius:999px;padding:6px 14px}
+  @media (prefers-color-scheme: dark){button.mode{color:#10131a}}
+
+  h2{font-size:26px;margin:44px 0 6px;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin:0 0 18px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+  .rule h3{margin:0 0 4px;font-size:18px}
+  .rule p{margin:0;color:var(--muted);font-size:15.5px}
+  .rule .formula{margin-top:10px}
+  .formula{display:inline-block;background:var(--soft);border-radius:8px;padding:4px 10px;
+    font-weight:700;color:var(--ink);font-size:15.5px}
+  .fig{display:block;width:100%}
+  .fig svg{display:block;width:100%;height:auto;max-width:460px;margin:0 auto}
+
+  /* SVG */
+  svg .ln{stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round}
+  svg .thin{stroke:var(--muted);stroke-width:1.4;fill:none;stroke-linecap:round}
+  svg .dash{stroke-dasharray:5 5}
+  svg .dot{fill:var(--ink)}
+  svg .lbl{font:italic 600 17px "Times New Roman",Times,serif;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+  svg .cap{font:600 13px -apple-system,"Segoe UI",Arial,sans-serif;fill:var(--muted);text-anchor:middle;dominant-baseline:central}
+  svg .val{font:700 14px -apple-system,"Segoe UI",Arial,sans-serif;text-anchor:middle;dominant-baseline:central}
+  svg .sec{fill-opacity:.2;stroke-width:2;stroke-linejoin:round}
+  svg .c1{fill:var(--c1);stroke:var(--c1)} svg .c2{fill:var(--c2);stroke:var(--c2)}
+  svg .c3{fill:var(--c3);stroke:var(--c3)} svg .c4{fill:var(--c4);stroke:var(--c4)}
+  svg text.c1,svg text.c2,svg text.c3,svg text.c4{stroke:none}
+  svg .bold{stroke-width:5;stroke-linecap:round;fill:none}
+  svg .bar{fill-opacity:.2;stroke-width:2}
+
+  /* interactive */
+  .lab{display:grid;grid-template-columns:minmax(260px,1fr) minmax(240px,1fr);gap:20px;align-items:center}
+  @media (max-width:700px){.lab{grid-template-columns:1fr}}
+  .lab input[type=range]{width:100%;accent-color:var(--c1)}
+  .read{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+  .read div{border-radius:12px;padding:10px 12px;background:var(--soft);font-size:14px;color:var(--muted)}
+  .read b{display:block;font-size:24px;font-variant-numeric:tabular-nums}
+  .t1{color:var(--c1)} .t2{color:var(--c2)} .t3{color:var(--c3)} .t4{color:var(--c4)}
+
+  /* tasks */
+  .task{margin-top:22px;scroll-margin-top:64px}
+  .task-head{display:flex;gap:14px;align-items:flex-start}
+  .num{flex:none;width:40px;height:40px;border-radius:12px;background:var(--ink);color:var(--bg);
+    display:grid;place-items:center;font-weight:800;font-size:19px}
+  .cond{margin:0;font-size:18px;font-weight:600;line-height:1.4}
+  .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .tag{font-size:12.5px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--soft);color:var(--muted)}
+  .body{display:grid;grid-template-columns:minmax(240px,5fr) 6fr;gap:22px;align-items:start;margin-top:16px}
+  .body.wide{grid-template-columns:1fr}
+  @media (max-width:760px){.body{grid-template-columns:1fr}}
+  details.sol{border-top:1px dashed var(--line);margin-top:16px;padding-top:12px}
+  details.sol>summary{cursor:pointer;font-weight:700;color:var(--c1);list-style:none;user-select:none}
+  details.sol>summary::-webkit-details-marker{display:none}
+  details.sol>summary::before{content:"▸ ";} details.sol[open]>summary::before{content:"▾ ";}
+  ol.steps{list-style:none;counter-reset:s;margin:0;padding:0}
+  ol.steps li{counter-increment:s;position:relative;padding:0 0 12px 38px}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;
+    border:2px solid var(--c1);color:var(--c1);font-weight:800;font-size:14px;display:grid;place-items:center}
+  .m{font-family:"Times New Roman",Times,serif;font-style:italic;font-weight:600;font-size:1.1em;white-space:nowrap}
+  .calc{display:block;margin-top:5px;background:var(--soft);border-radius:8px;padding:6px 12px;font-weight:600;
+    font-variant-numeric:tabular-nums;width:fit-content}
+  .answer{margin-top:6px;border-radius:12px;padding:12px 16px;background:var(--ok-bg);border-left:5px solid var(--ok);font-weight:700}
+  .answer small{font-weight:500;color:var(--muted);display:block}
+  .note{border-radius:12px;padding:12px 16px;background:var(--soft);font-size:15.5px;margin:0 0 14px}
+  .note b{color:var(--c2)}
+  .case h4{margin:0 0 6px;font-size:16px}
+  .cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;margin-bottom:14px}
+  .case{border:1px solid var(--line);border-radius:14px;padding:14px}
+
+  /* task 1 statements */
+  .stm{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:14px 0}
+  .st{border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+  .st svg{display:block;width:100%;max-width:240px;margin:0 auto 6px}
+  .st svg .val{font-size:20px} .st svg .lbl{font-size:21px}
+  .st .q{font-weight:700;font-size:15.5px;margin:0 0 4px}
+  .st .why{font-size:14.5px;color:var(--muted);margin:0}
+  .badge{display:inline-block;font-size:12.5px;font-weight:800;padding:1px 9px;border-radius:999px;margin-bottom:5px}
+  .st.ok{border-color:var(--ok)} .st.ok .badge{background:var(--ok-bg);color:var(--ok)}
+  .st.no .badge{background:var(--no-bg);color:var(--no)}
+
+  ol.claims{margin:16px 0 0;padding-left:28px;font-size:17px;columns:2;column-gap:32px}
+  ol.claims li{padding:3px 0 3px 4px;break-inside:avoid}
+  ol.claims li::marker{font-weight:700}
+  @media (max-width:640px){ol.claims{columns:1}}
+  table.ans{width:100%;border-collapse:collapse;font-size:16px}
+  table.ans td{padding:9px 6px;border-bottom:1px solid var(--line)}
+  table.ans td:first-child{width:90px;color:var(--muted);font-weight:600}
+  table.ans td:last-child{font-weight:700}
+  table.ans tr:last-child td{border-bottom:0}
+  footer{color:var(--muted);font-size:14px;margin-top:36px;text-align:center}
+  @media print{nav.top{display:none} .card{break-inside:avoid} body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Геометрия · 7 класс</div>
+  <h1>Начальные геометрические сведения</h1>
+  <p class="lead">Разбор семи задач для подготовки к контрольной. Сначала — пять правил, на которых держится
+  вся тема, потом каждая задача по шагам с чертежом.</p>
+</header>
+
+<nav class="top">
+  <a href="#rules">Правила</a>
+  <a href="#t1">1</a><a href="#t2">2</a><a href="#t3">3</a><a href="#t4">4</a><a href="#t5">5</a><a href="#t6">6</a><a href="#t7">7</a>
+  <a href="#answers">Ответы</a>
+  <span class="sp"></span>
+  <button class="mode" id="mode">Показать решения</button>
+</nav>
+
+<!-- ================= ПРАВИЛА ================= -->
+<section id="rules">
+  <h2>Пять правил, которые решают всё</h2>
+  <p class="sub">Каждая задача ниже — это одно или два из этих правил.</p>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="rule"><h3>Виды углов</h3></div>
+    <div class="fig" data-fig="types"></div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="lab">
+      <div class="fig" id="labfig"></div>
+      <div>
+        <div class="rule">
+          <h3>Смежные и вертикальные углы — попробуйте сами</h3>
+          <p>Двигайте ползунок: две прямые пересекаются и образуют четыре угла.</p>
+        </div>
+        <div class="read">
+          <div>угол <span class="t1">α</span><b class="t1" id="ra">60°</b></div>
+          <div>смежный с ним <span class="t2">β</span><b class="t2" id="rb">120°</b></div>
+        </div>
+        <input type="range" id="slider" min="20" max="160" value="60" aria-label="Величина угла α">
+        <p style="margin:12px 0 0;font-size:15.5px">
+          <b>Смежные</b> (соседние, <span class="t1">синий</span> + <span class="t2">оранжевый</span>) вместе дают развёрнутый угол:
+          <span class="formula" id="rsum">60° + 120° = 180°</span><br>
+          <b>Вертикальные</b> (напротив друг друга, одного цвета) всегда равны.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card rule">
+      <h3>Смежные углы</h3>
+      <p>Одна сторона общая, две другие — продолжения друг друга (лежат на одной прямой).</p>
+      <span class="formula">сумма = 180°</span>
+    </div>
+    <div class="card rule">
+      <h3>Вертикальные углы</h3>
+      <p>Стороны одного угла — продолжения сторон другого. Получаются при пересечении двух прямых.</p>
+      <span class="formula">они равны</span>
+    </div>
+    <div class="card rule">
+      <h3>Биссектриса угла</h3>
+      <div class="fig" data-fig="bis"></div>
+      <p>Луч из вершины, который делит угол на два равных.</p>
+      <span class="formula">половина = весь угол : 2</span>
+    </div>
+    <div class="card rule">
+      <h3>Середина отрезка</h3>
+      <div class="fig" data-fig="mid"></div>
+      <p>Точка, которая делит отрезок на две равные части.</p>
+      <span class="formula">половина = весь отрезок : 2</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ЗАДАЧИ ================= -->
+<h2 id="tasks">Задачи</h2>
+<p class="sub">Сначала попробуйте решить сами, потом откройте «Решение» под задачей. Кнопка вверху открывает все решения сразу.</p>
+
+<!-- 1 -->
+<article class="card task" id="t1">
+  <div class="task-head"><div class="num">1</div><div>
+    <p class="cond">Используя рисунок, укажите номера верных утверждений.</p>
+    <div class="tags"><span class="tag">смежные</span><span class="tag">вертикальные</span><span class="tag">виды углов</span></div>
+  </div></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="fig" data-fig="a0"></div>
+    <div class="fig" data-fig="b0"></div>
+  </div>
+  <ol class="claims">
+    <li><span class="m">∠BAC</span> и <span class="m">∠DAE</span> — смежные углы.</li>
+    <li><span class="m">∠MOK</span> и <span class="m">∠MON</span> — вертикальные углы.</li>
+    <li><span class="m">∠CAD</span> и <span class="m">∠BAE</span> — вертикальные углы.</li>
+    <li><span class="m">∠KOL</span> и <span class="m">∠NOL</span> — смежные углы.</li>
+    <li><span class="m">∠BAE</span> — тупой угол.</li>
+    <li><span class="m">∠MON</span> — прямой угол.</li>
+    <li><span class="m">∠CAD</span> — острый угол.</li>
+  </ol>
+  <details class="sol"><summary>Решение</summary>
+    <p class="note" style="margin-top:12px"><b>Как отличить:</b> у смежных углов есть <u>общая сторона</u> (общая буква-луч в названии),
+    у вертикальных общей стороны нет — они лежат «крест-накрест». Сначала найдём все углы:
+    на левом рисунке <span class="m">∠BAC = 71°</span>, значит соседние с ним углы равны <span class="m">180° − 71° = 109°</span>;
+    на правом все четыре угла по 90°.</p>
+    <div class="stm" id="stm"></div>
+    <div class="answer">Ответ: 3, 4, 5, 6</div>
+  </details>
+</article>
+
+<!-- 2 -->
+<article class="card task" id="t2">
+  <div class="task-head"><div class="num">2</div><div>
+    <p class="cond">Луч <span class="m">RM</span> является биссектрисой угла <span class="m">TRS</span>.<br>
+      а) Найдите <span class="m">∠TRM</span>, если <span class="m">∠TRS = 174°</span>.<br>
+      б) Найдите <span class="m">∠TRS</span>, если <span class="m">∠MRS = 74°</span>.</p>
+    <div class="tags"><span class="tag">биссектриса</span></div>
+  </div></div>
+  <details class="sol"><summary>Решение</summary>
+    <p class="note" style="margin-top:12px">Биссектриса делит угол пополам: <span class="m">∠TRM = ∠MRS</span>.
+      Знаем целый угол — <b>делим на 2</b>. Знаем половину — <b>умножаем на 2</b>.</p>
+    <div class="cases">
+      <div class="case"><h4>а) Дан весь угол → ищем половину</h4>
+        <div class="fig" data-fig="t2a"></div>
+        <span class="calc">∠TRM = 174° : 2 = 87°</span></div>
+      <div class="case"><h4>б) Дана половина → ищем весь угол</h4>
+        <div class="fig" data-fig="t2b"></div>
+        <span class="calc">∠TRS = 74° · 2 = 148°</span></div>
+    </div>
+    <div class="answer">Ответ: а) 87°; б) 148°</div>
+  </details>
+</article>
+
+<!-- 3 -->
+<article class="card task" id="t3">
+  <div class="task-head"><div class="num">3</div><div>
+    <p class="cond">Найдите <span class="m">∠BCK</span>, если на рисунке <span class="m">∠ACB = 78°</span>.</p>
+    <div class="tags"><span class="tag">смежные углы</span></div>
+  </div></div>
+  <div class="body">
+    <div class="fig" data-fig="t3"></div>
+    <details class="sol" style="margin-top:0;border-top:0;padding-top:0"><summary>Решение</summary>
+      <ol class="steps" style="margin-top:12px">
+        <li>Точки <span class="m">A</span>, <span class="m">C</span>, <span class="m">K</span> лежат на одной прямой, а луч <span class="m">CB</span> выходит из точки <span class="m">C</span>.</li>
+        <li>Значит, <span class="m t1">∠ACB</span> и <span class="m t2">∠BCK</span> — <b>смежные</b>: сторона <span class="m">CB</span> общая, а <span class="m">CA</span> и <span class="m">CK</span> — продолжения друг друга.</li>
+        <li>Сумма смежных углов равна 180°:
+          <span class="calc">∠BCK = 180° − 78° = 102°</span></li>
+      </ol>
+      <div class="answer">Ответ: 102°</div>
+    </details>
+  </div>
+</article>
+
+<!-- 4 -->
+<article class="card task" id="t4">
+  <div class="task-head"><div class="num">4</div><div>
+    <p class="cond">Найдите длины отрезков <span class="m">OB</span> и <span class="m">OA</span>, если <span class="m">AB = 36 см</span>,
+      а отрезок <span class="m">OB</span> в 3 раза меньше отрезка <span class="m">OA</span>.</p>
+    <div class="tags"><span class="tag">части отрезка</span><span class="tag">уравнение</span></div>
+  </div></div>
+  <div class="body">
+    <div>
+      <div class="fig" data-fig="t4tri"></div>
+    </div>
+    <details class="sol" style="margin-top:0;border-top:0;padding-top:0"><summary>Решение</summary>
+      <ol class="steps" style="margin-top:12px">
+        <li>Треугольник и луч <span class="m">CK</span> здесь только «декорация». Важно одно: точка <span class="m">O</span> лежит на отрезке <span class="m">AB</span>, поэтому
+          <span class="calc">OB + OA = AB = 36</span></li>
+        <li>Меньший отрезок обозначим за <span class="m">x</span>: <span class="m t2">OB = x</span>. Тогда <span class="m t1">OA = 3x</span> — в отрезке <span class="m">AB</span> всего 4 одинаковые части.
+          <div class="fig" data-fig="t4bar" style="margin-top:8px"></div></li>
+        <li>Составим уравнение:
+          <span class="calc">x + 3x = 36 &nbsp;→&nbsp; 4x = 36 &nbsp;→&nbsp; x = 9</span></li>
+        <li><span class="calc">OB = 9 см, &nbsp; OA = 3 · 9 = 27 см</span>
+          Проверка: 9 + 27 = 36 ✓</li>
+      </ol>
+      <div class="answer">Ответ: OB = 9 см, OA = 27 см</div>
+    </details>
+  </div>
+</article>
+
+<!-- 5 -->
+<article class="card task" id="t5">
+  <div class="task-head"><div class="num">5</div><div>
+    <p class="cond">Отрезки <span class="m">AB</span> и <span class="m">CD</span> пересекаются в точке <span class="m">O</span>.
+      Луч <span class="m">OK</span> является биссектрисой угла <span class="m">DOB</span>.
+      Найдите <span class="m">∠DOK</span>, если <span class="m">∠AOD = 84°</span>.</p>
+    <div class="tags"><span class="tag">смежные углы</span><span class="tag">биссектриса</span></div>
+  </div></div>
+  <details class="sol"><summary>Решение</summary>
+    <div class="body">
+      <div class="fig" data-fig="t5"></div>
+      <div>
+      <ol class="steps">
+        <li>Рисунка в условии нет — <b>строим сами</b>: два пересекающихся отрезка и биссектриса внутри угла <span class="m">DOB</span>.</li>
+        <li><span class="m t1">∠AOD</span> и <span class="m">∠DOB</span> — смежные (общая сторона <span class="m">OD</span>, а <span class="m">OA</span> и <span class="m">OB</span> лежат на одной прямой):
+          <span class="calc">∠DOB = 180° − 84° = 96°</span></li>
+        <li><span class="m">OK</span> — биссектриса, делит <span class="m">∠DOB</span> пополам:
+          <span class="calc">∠DOK = 96° : 2 = 48°</span></li>
+      </ol>
+      <div class="answer">Ответ: 48°</div>
+      </div>
+    </div>
+  </details>
+</article>
+
+<!-- 6 -->
+<article class="card task" id="t6">
+  <div class="task-head"><div class="num">6</div><div>
+    <p class="cond">Из точки <span class="m">A</span> проведены три луча: <span class="m">AM</span>, <span class="m">AN</span> и <span class="m">AK</span>.
+      Найдите угол <span class="m">NAK</span>, если <span class="m">∠MAN = 76°</span>, <span class="m">∠MAK = 36°</span>.</p>
+    <div class="tags"><span class="tag">два случая</span><span class="tag">сложение углов</span></div>
+  </div></div>
+  <details class="sol"><summary>Решение</summary>
+    <p class="note" style="margin-top:12px"><b>Ловушка:</b> в условии не сказано, с какой стороны от луча <span class="m">AM</span> проходит луч <span class="m">AK</span>.
+      Поэтому чертежей два — и ответов тоже два.</p>
+    <div class="cases">
+      <div class="case"><h4>Случай 1. Луч AK внутри угла MAN</h4>
+        <div class="fig" data-fig="t6a"></div>
+        Луч <span class="m">AK</span> делит угол <span class="m">MAN</span> на две части, одна из них 36°:
+        <span class="calc">∠NAK = 76° − 36° = 40°</span></div>
+      <div class="case"><h4>Случай 2. Луч AK снаружи угла MAN</h4>
+        <div class="fig" data-fig="t6b"></div>
+        Теперь луч <span class="m">AM</span> оказался между <span class="m">AN</span> и <span class="m">AK</span> — углы складываются:
+        <span class="calc">∠NAK = 76° + 36° = 112°</span></div>
+    </div>
+    <div class="answer">Ответ: 40° или 112°</div>
+  </details>
+</article>
+
+<!-- 7 -->
+<article class="card task" id="t7">
+  <div class="task-head"><div class="num">7</div><div>
+    <p class="cond">На прямой отмечены точки <span class="m">A</span>, <span class="m">B</span> и <span class="m">C</span>.
+      Найдите длину отрезка <span class="m">MK</span>, где <span class="m">M</span> — середина отрезка <span class="m">AB</span>,
+      <span class="m">K</span> — середина <span class="m">BC</span>, причём <span class="m">AB = 50 см</span>, <span class="m">BC = 16 см</span>.</p>
+    <div class="tags"><span class="tag">два случая</span><span class="tag">середина отрезка</span></div>
+  </div></div>
+  <details class="sol"><summary>Решение</summary>
+    <p class="note" style="margin-top:12px"><b>Снова ловушка:</b> порядок точек на прямой не задан. Точка <span class="m">C</span> может лежать
+      по разные стороны от <span class="m">B</span>. В обоих случаях половинки одинаковые:
+      <span class="m">MB = 50 : 2 = 25 см</span>, <span class="m">BK = 16 : 2 = 8 см</span>.</p>
+    <div class="cases">
+      <div class="case"><h4>Случай 1. Точка B между A и C</h4>
+        <div class="fig" data-fig="t7a"></div>
+        Точки <span class="m">M</span> и <span class="m">K</span> по разные стороны от <span class="m">B</span> — половинки складываем:
+        <span class="calc">MK = MB + BK = 25 + 8 = 33 см</span></div>
+      <div class="case"><h4>Случай 2. Точка C между A и B</h4>
+        <div class="fig" data-fig="t7b"></div>
+        Точки <span class="m">M</span> и <span class="m">K</span> по одну сторону от <span class="m">B</span> — из большей половинки вычитаем меньшую:
+        <span class="calc">MK = MB − BK = 25 − 8 = 17 см</span></div>
+    </div>
+    <p style="font-size:15px;color:var(--muted);margin:0 0 12px">Третий вариант (точка <span class="m">A</span> между <span class="m">B</span> и <span class="m">C</span>) невозможен:
+      тогда <span class="m">BC</span> был бы длиннее <span class="m">AB</span>, а у нас 16 &lt; 50.</p>
+    <div class="answer">Ответ: 33 см или 17 см</div>
+  </details>
+</article>
+
+<!-- ================= ОТВЕТЫ ================= -->
+<section id="answers">
+  <h2>Все ответы</h2>
+  <div class="card">
+    <table class="ans">
+      <tr><td>Задача 1</td><td>3, 4, 5, 6</td></tr>
+      <tr><td>Задача 2</td><td>а) 87°; б) 148°</td></tr>
+      <tr><td>Задача 3</td><td>102°</td></tr>
+      <tr><td>Задача 4</td><td>OB = 9 см, OA = 27 см</td></tr>
+      <tr><td>Задача 5</td><td>48°</td></tr>
+      <tr><td>Задача 6</td><td>40° или 112°</td></tr>
+      <tr><td>Задача 7</td><td>33 см или 17 см</td></tr>
+    </table>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="rule"><h3>Что проверить перед контрольной</h3></div>
+    <ol class="steps" style="margin-top:12px">
+      <li>Видите прямую и луч из точки на ней — ищите <b>смежные</b> углы и вычитайте из 180°.</li>
+      <li>Видите две пересекающиеся прямые — углы напротив <b>равны</b>.</li>
+      <li>Слова «биссектриса» и «середина» значат одно действие: <b>делим на 2</b> (или умножаем, если дана половина).</li>
+      <li>«В 3 раза меньше / больше» — обозначайте меньшее за <b>x</b> и считайте части.</li>
+      <li style="padding-bottom:0">Нет рисунка, и расположение не задано — проверьте, <b>нет ли второго случая</b>.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>Геометрия, 7 класс · Начальные геометрические сведения</footer>
+</div>
+
+<script>
+(function(){
+  const RAD=Math.PI/180;
+  const P=(c,r,d)=>[c[0]+r*Math.cos(d*RAD), c[1]-r*Math.sin(d*RAD)];
+  const pt=p=>p[0].toFixed(1)+' '+p[1].toFixed(1);
+  const svg=(w,h,body,label)=>`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${label||''}">${body}</svg>`;
+  const seg=(a,b,cls)=>`<line class="${cls||'ln'}" x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}"/>`;
+  const dot=p=>`<circle class="dot" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3.5"/>`;
+  const txt=(p,s,cls)=>`<text class="${cls||'lbl'}" x="${p[0].toFixed(1)}" y="${p[1].toFixed(1)}">${s}</text>`;
+  // угол от направления a1 до a2 (против часовой стрелки, градусы)
+  function ang(c,r,a1,a2,k,label,lr){
+    let s='';
+    if(Math.abs(a2-a1-90)<0.01){
+      const q=r*0.7;
+      s+=`<path class="sec ${k}" d="M${pt(c)} L${pt(P(c,q,a1))} L${pt(P(c,q*Math.SQRT2,a1+45))} L${pt(P(c,q,a2))} Z"/>`;
+    }else{
+      const big=(a2-a1)>180?1:0;
+      s+=`<path class="sec ${k}" d="M${pt(c)} L${pt(P(c,r,a1))} A${r} ${r} 0 ${big} 0 ${pt(P(c,r,a2))} Z"/>`;
+    }
+    if(label) s+=txt(P(c,lr||r+19,(a1+a2)/2),label,'val '+k);
+    return s;
+  }
+
+  /* ---- рисунки к задаче 1 ---- */
+  function figA(hl){
+    const c=[150,100],L=105,d={D:18,C:127,B:198,E:307};
+    let s=(hl||[]).map(h=>ang(c,28,h[0],h[1],h[2],h[3])).join('');
+    s+=seg(P(c,L,d.B),P(c,L,d.D))+seg(P(c,L,d.C),P(c,L,d.E))+dot(c);
+    for(const n in d) s+=txt(P(c,L+14,d[n]),n);
+    s+=txt(P(c,25,343),'A');
+    return svg(300,205,s,'Прямые BD и CE пересекаются в точке A');
+  }
+  function figB(hl){
+    const c=[150,102],L=100,d={N:55,M:145,K:235,L:325};
+    let s=(hl||[]).map(h=>ang(c,28,h[0],h[1],h[2],h[3])).join('');
+    s+=seg(P(c,L,d.M),P(c,L,d.L))+seg(P(c,L,d.K),P(c,L,d.N))+dot(c);
+    for(const n in d) s+=txt(P(c,L+14,d[n]),n);
+    s+=txt(P(c,24,190),'O');
+    return svg(300,210,s,'Прямые ML и KN пересекаются в точке O');
+  }
+
+  const F={
+    a0:()=>figA([[127,198,'c1','71°']]),
+    b0:()=>figB([[325,415,'c1','90°']]),
+    types:()=>{
+      const items=[[50,'острый','меньше 90°','c1'],[90,'прямой','ровно 90°','c3'],[130,'тупой','от 90° до 180°','c2'],[180,'развёрнутый','ровно 180°','c4']];
+      let s='';
+      items.forEach((it,i)=>{
+        const c=[(it[0]>=130?78:50)+i*150,84],L=58;
+        s+=ang(c,22,0,it[0],it[3]);
+        s+=seg(c,P(c,L,0))+seg(c,P(c,L,it[0]))+dot(c);
+        s+=txt([75+i*150,112],it[1],'val '+it[3])+txt([75+i*150,131],it[2],'cap');
+      });
+      return `<svg viewBox="0 0 600 145" role="img" aria-label="Виды углов" style="max-width:720px">${s}</svg>`;
+    },
+    bis:()=>{
+      const c=[50,125],L=150;
+      let s=ang(c,46,8,38,'c1')+ang(c,54,38,68,'c1');
+      s+=seg(c,P(c,L,8))+seg(c,P(c,L*0.72,68))+seg(c,P(c,L*0.9,38),'thin dash')+dot(c);
+      s+=txt(P(c,L*0.9+16,38),'биссектриса','cap');
+      return svg(300,140,s,'Биссектриса делит угол пополам');
+    },
+    mid:()=>{
+      const a=[30,60],b=[270,60],m=[150,60];
+      let s=seg(a,b)+dot(a)+dot(b)+dot(m);
+      [90,210].forEach(x=>{s+=seg([x-4,68],[x+4,52],'thin')});
+      s+=txt([30,38],'A')+txt([270,38],'B')+txt([150,38],'M')+txt([90,88],'AM','val c1')+txt([150,88],'=','cap')+txt([210,88],'MB','val c1');
+      return svg(300,120,s,'Середина M отрезка AB');
+    },
+    t2a:()=>{
+      const c=[150,120],L=115;
+      let s=ang(c,34,3,90,'c2','87°')+ang(c,34,90,177,'c2','87°');
+      s+=seg(c,P(c,L,3))+seg(c,P(c,L,177))+seg(c,P(c,L*0.8,90),'thin dash')+dot(c);
+      s+=txt(P(c,L+13,3),'S')+txt(P(c,L+13,177),'T')+txt(P(c,L*0.8+14,90),'M')+txt([150,138],'R');
+      s+=txt([150,160],'весь угол TRS = 174°','val c1');
+      return svg(300,175,s,'Угол TRS 174 градуса с биссектрисой RM');
+    },
+    t2b:()=>{
+      const c=[150,138],L=112;
+      let s=ang(c,36,0,74,'c1','74°')+ang(c,36,74,148,'c2','74°');
+      s+=seg(c,P(c,L,0))+seg(c,P(c,L,148))+seg(c,P(c,L,74),'thin dash')+dot(c);
+      s+=txt(P(c,L+13,0),'S')+txt(P(c,L+13,148),'T')+txt(P(c,L+13,74),'M')+txt([150,156],'R');
+      return svg(300,175,s,'Угол TRS с биссектрисой RM, половина 74 градуса');
+    },
+    t3:(open)=>{
+      const A=[30,165],C=[195,165],K=[290,165],B=P(C,130,102);
+      let s=ang(C,32,0,102,'c2',open?'102°':'?')+ang(C,32,102,180,'c1','78°');
+      s+=seg(A,K)+seg(A,B)+seg(B,C)+dot(C);
+      s+=txt([28,183],'A')+txt([195,183],'C')+txt([290,183],'K')+txt([B[0],B[1]-14],'B');
+      return svg(320,200,s,'Треугольник ABC, точка K на продолжении AC');
+    },
+    t4tri:(open)=>{
+      const B=[50,125],A=[330,125],O=[120,125],C=[95,28],K=[132,173];
+      let s=seg(B,C)+seg(C,A)+seg(C,K);
+      s+=open?seg(B,O,'bold c2')+seg(O,A,'bold c1'):seg(B,A);s+=dot(O);
+      s+=txt([40,142],'B')+txt([338,142],'A')+txt([106,141],'O')+txt([84,22],'C')+txt([146,176],'K');
+      if(open) s+=txt([85,108],'x','val c2')+txt([225,108],'3x','val c1');
+      return svg(370,195,s,'Треугольник ABC, точка O на стороне AB');
+    },
+    t4bar:()=>{
+      let s='';
+      for(let i=0;i<4;i++){
+        const k=i===0?'c2':'c1';
+        s+=`<rect class="bar ${k}" x="${30+i*80}" y="30" width="80" height="34" rx="4"/>`+txt([70+i*80,47],'x','val '+k);
+      }
+      s+=txt([30,16],'B')+txt([110,16],'O')+txt([350,16],'A');
+      s+=seg([30,82],[350,82],'thin')+seg([30,76],[30,88],'thin')+seg([350,76],[350,88],'thin');
+      s+=txt([190,98],'AB = 36 см — это 4 части','cap');
+      return svg(380,110,s,'Отрезок AB разделён на 4 равные части');
+    },
+    t5:()=>{
+      const c=[160,125],L=115;
+      let s=ang(c,30,96,180,'c1','84°')+ang(c,40,48,96,'c2','48°')+ang(c,46,0,48,'c2','48°');
+      s+=seg(P(c,L,180),P(c,L,0))+seg(P(c,95,96),P(c,95,276))+seg(c,P(c,L,48),'thin dash')+dot(c);
+      s+=txt(P(c,L+13,180),'A')+txt(P(c,L+13,0),'B')+txt(P(c,109,96),'D')+txt(P(c,109,276),'C')+txt(P(c,L+13,48),'K')+txt(P(c,20,228),'O');
+      return svg(320,245,s,'Отрезки AB и CD пересекаются в точке O, OK — биссектриса');
+    },
+    t6a:()=>{
+      const c=[70,160],L=128;
+      let s=ang(c,56,0,36,'c1','36°')+ang(c,42,36,76,'c2','40°');
+      s+=seg(c,P(c,L,0))+seg(c,P(c,L,76))+seg(c,P(c,L,36))+dot(c);
+      s+=txt(P(c,L+13,0),'M')+txt(P(c,L+13,76),'N')+txt(P(c,L+13,36),'K')+txt([56,172],'A');
+      return svg(300,185,s,'Луч AK внутри угла MAN');
+    },
+    t6b:()=>{
+      const c=[70,140],L=112;
+      let s=ang(c,56,-36,0,'c1','36°')+ang(c,40,0,76,'c3','76°')+
+        `<path class="thin c2" style="fill:none" d="M${pt(P(c,96,-36))} A96 96 0 0 0 ${pt(P(c,96,76))}"/>`+txt(P(c,116,20),'112°','val c2');
+      s+=seg(c,P(c,L+25,0))+seg(c,P(c,L,76))+seg(c,P(c,L+25,-36))+dot(c);
+      s+=txt(P(c,L+38,0),'M')+txt(P(c,L+13,76),'N')+txt(P(c,L+38,-36),'K')+txt([54,142],'A');
+      return svg(300,245,s,'Луч AK вне угла MAN');
+    },
+    t7a:()=>nline([['A',30],['M',155,'c3'],['B',280],['K',320,'c3'],['C',360]],
+      [[30,155,1,'25'],[155,280,1,'25'],[280,320,1,'8'],[320,360,1,'8'],[155,320,2,'MK = 33','c2']]),
+    t7b:()=>nline([['A',30],['M',155,'c3'],['C',200],['K',240,'c3'],['B',280]],
+      [[30,155,1,'25'],[155,280,1,'25'],[200,240,2,'8'],[240,280,2,'8'],[155,240,3,'MK = 17','c2']],true)
+  };
+
+  // числовая прямая: точки [имя,x,цвет], скобки [x1,x2,ряд,подпись,цвет]
+  function nline(pts,rows,three){
+    const y=38; let s=seg([12,y],[378,y]);
+    rows.forEach(r=>{
+      const yy=y+24+(r[2]-1)*34, k=r[4];
+      const cls=k?'bold '+k:'thin';
+      s+=`<line class="${cls}" style="${k?'stroke-width:3.5':''}" x1="${r[0]+2}" y1="${yy}" x2="${r[1]-2}" y2="${yy}"/>`;
+      if(!k) s+=seg([r[0]+2,yy-4],[r[0]+2,yy+4],'thin')+seg([r[1]-2,yy-4],[r[1]-2,yy+4],'thin');
+      s+=txt([(r[0]+r[1])/2,yy+14],r[3],k?'val '+k:'cap');
+    });
+    pts.forEach(p=>{
+      s+=`<circle class="${p[2]||'dot'}" cx="${p[1]}" cy="${y}" r="${p[2]?5:3.5}"/>`+txt([p[1],y-18],p[0]);
+    });
+    return svg(390,three?150:118,s,'Точки на прямой');
+  }
+
+  document.querySelectorAll('[data-fig]').forEach(el=>{el.innerHTML=F[el.dataset.fig](false);});
+  document.querySelectorAll('article.task').forEach(t=>{
+    const d=t.querySelector('details.sol');
+    d.addEventListener('toggle',()=>t.querySelectorAll('[data-fig]').forEach(el=>{el.innerHTML=F[el.dataset.fig](d.open);}));
+  });
+
+  /* ---- утверждения задачи 1 ---- */
+  const S=[
+    ['∠BAC и ∠DAE — смежные углы',false,()=>figA([[127,198,'c1'],[307,378,'c2']]),
+      'Общей стороны нет, углы лежат напротив друг друга. Это вертикальные углы, а не смежные.'],
+    ['∠MOK и ∠MON — вертикальные углы',false,()=>figB([[145,235,'c1'],[55,145,'c2']]),
+      'У них общая сторона OM, а OK и ON лежат на одной прямой. Это смежные углы.'],
+    ['∠CAD и ∠BAE — вертикальные углы',true,()=>figA([[18,127,'c1'],[198,307,'c2']]),
+      'AC и AE — одна прямая, AD и AB — другая. Углы лежат крест-накрест.'],
+    ['∠KOL и ∠NOL — смежные углы',true,()=>figB([[235,325,'c1'],[325,415,'c2']]),
+      'Сторона OL общая, а OK и ON — продолжения друг друга.'],
+    ['∠BAE — тупой угол',true,()=>figA([[127,198,'c1','71°'],[198,307,'c2','109°']]),
+      '∠BAE смежный с ∠BAC: 180° − 71° = 109°. Больше 90° — тупой.'],
+    ['∠MON — прямой угол',true,()=>figB([[325,415,'c1','90°'],[55,145,'c2','90°']]),
+      '∠MON смежный с ∠NOL: 180° − 90° = 90°.'],
+    ['∠CAD — острый угол',false,()=>figA([[127,198,'c1','71°'],[18,127,'c2','109°']]),
+      '∠CAD смежный с ∠BAC: 180° − 71° = 109°. Это тупой угол.']
+  ];
+  document.getElementById('stm').innerHTML=S.map((s,i)=>
+    `<div class="st ${s[1]?'ok':'no'}">${s[2]()}<div><span class="badge">${s[1]?'✓ верно':'✗ неверно'}</span>
+     <p class="q">${i+1}) ${s[0]}</p><p class="why">${s[3]}</p></div></div>`).join('');
+
+  /* ---- интерактив ---- */
+  const sl=document.getElementById('slider');
+  function lab(){
+    const a=+sl.value,b=180-a,c=[160,115],L=120;
+    let s=ang(c,34,0,a,'c1',a+'°')+ang(c,34,a,180,'c2',b+'°')+ang(c,34,180,180+a,'c1',a+'°')+ang(c,34,180+a,360,'c2',b+'°');
+    s+=seg(P(c,L+20,180),P(c,L+20,0))+seg(P(c,L-15,a),P(c,L-15,a+180))+dot(c);
+    document.getElementById('labfig').innerHTML=svg(320,230,s,'Две пересекающиеся прямые');
+    document.getElementById('ra').textContent=a+'°';
+    document.getElementById('rb').textContent=b+'°';
+    document.getElementById('rsum').textContent=a+'° + '+b+'° = 180°';
+  }
+  sl.addEventListener('input',lab); lab();
+
+  /* ---- режим тренировки ---- */
+  const btn=document.getElementById('mode'); let open=false;
+  btn.addEventListener('click',()=>{
+    open=!open;
+    document.querySelectorAll('details.sol').forEach(d=>d.open=open);
+    btn.textContent=open?'Скрыть решения':'Показать решения';
+  });
+})();
+</script>
+</body>
+</html>
